@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,13 +9,24 @@ import {
   TouchableOpacity,
   TouchableHighlight,
 } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 import { auth, signOut } from "../config/Firebase";
 
 function Home({ navigation }) {
   const [press, setpress] = useState(true);
+  let store = useSelector((state) => state);
+  const increment = useDispatch();
+  const StartQiz = (asd) => {
+    increment({
+      type: "startQuiz",
+      name: asd
+    });
+    console.log(store)
+    navigation.navigate("questions")
+  };
 
   const handlePress = (e) => {
-    console.log(e.target.children[0].innerText);
+    setpress(e.target.children[0].innerText);
   };
 
   const logOut = () => {
@@ -44,6 +55,8 @@ function Home({ navigation }) {
         <TouchableHighlight
           onPress={(e) => {
             handlePress(e);
+            setpress(e.target.children[0].innerText);
+            StartQiz("Javascript")
           }}
           key="1"
           style={styles.button}
@@ -53,13 +66,15 @@ function Home({ navigation }) {
         <TouchableOpacity
           onPress={(e) => {
             handlePress(e);
+            setpress(e.target.children[0].innerText);
+            StartQiz("Html")
           }}
           key="2"
           style={styles.button}
         >
           <Text style={{ color: "#fff" }}>Html</Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={(e) => {
             handlePress(e);
           }}
@@ -79,7 +94,7 @@ function Home({ navigation }) {
           style={styles.button}
         >
           <Text style={{ color: "#fff" }}>React Native</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </>
   );

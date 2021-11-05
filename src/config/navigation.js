@@ -11,6 +11,10 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { HeaderStyleInterpolators } from "@react-navigation/stack";
 import Questions from "../containers/Questions";
 import Result from "../containers/Result";
+import { PersistGate } from "redux-persist/integration/react";
+import { Provider } from "react-redux";
+import store, { persistor } from "../store";
+
 
 function AppRouter() {
   const Drawer = createDrawerNavigator();
@@ -34,73 +38,77 @@ function AppRouter() {
   });
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="signup">
-        {userAuth ? (
-          <>
-            <Drawer.Screen
-              options={{
-                title: "Quiz App",
-                headerStyle: {
-                  backgroundColor: "#22283e",
-                  justifyContent: "center",
-                },
-                headerTintColor: "#fff",
-              }}
-              name="home"
-              component={Home}
-            />
-            <Drawer.Screen
-              options={{
-                title: "Question",
-                headerStyle: {
-                  backgroundColor: "#22283e",
-                  justifyContent: "center",
-                },
-                headerTintColor: "#fff",
-              }}
-              name="questions"
-              component={Questions}
-            />
-            <Drawer.Screen
-              options={{
-                title: "Result",
-                headerStyle: {
-                  backgroundColor: "#22283e",
-                  justifyContent: "center",
-                },
-                headerTintColor: "#fff",
-              }}
-              name="result"
-              component={Result}
-            />
-          </>
-        ) : (
-          <>
-            <Drawer.Screen
-              name="signup"
-              options={{
-                title: "Register Your Self",
-                headerStyle: {
-                  backgroundColor: "#22283e",
-                },
-                headerTintColor: "#fff",
-              }}
-              component={Signup}
-            />
-            <Drawer.Screen
-              name="login"
-              options={{
-                title: "Register Your Self",
-                headerStyle: {
-                  backgroundColor: "#22283e",
-                },
-                headerTintColor: "#fff",
-              }}
-              component={Login}
-            />
-          </>
-        )}
-      </Drawer.Navigator>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <Drawer.Navigator initialRouteName="signup">
+            {userAuth ? (
+              <>
+                <Drawer.Screen
+                  options={{
+                    title: "Quiz App",
+                    headerStyle: {
+                      backgroundColor: "#22283e",
+                      justifyContent: "center",
+                    },
+                    headerTintColor: "#fff",
+                  }}
+                  name="home"
+                  component={Home}
+                />
+                <Drawer.Screen
+                  options={{
+                    title: "Question",
+                    headerStyle: {
+                      backgroundColor: "#22283e",
+                      justifyContent: "center",
+                    },
+                    headerTintColor: "#fff",
+                  }}
+                  name="questions"
+                  component={Questions}
+                />
+                <Drawer.Screen
+                  options={{
+                    title: "Result",
+                    headerStyle: {
+                      backgroundColor: "#22283e",
+                      justifyContent: "center",
+                    },
+                    headerTintColor: "#fff",
+                  }}
+                  name="result"
+                  component={Result}
+                />
+              </>
+            ) : (
+              <>
+                <Drawer.Screen
+                  name="signup"
+                  options={{
+                    title: "Register Your Self",
+                    headerStyle: {
+                      backgroundColor: "#22283e",
+                    },
+                    headerTintColor: "#fff",
+                  }}
+                  component={Signup}
+                />
+                <Drawer.Screen
+                  name="login"
+                  options={{
+                    title: "Register Your Self",
+                    headerStyle: {
+                      backgroundColor: "#22283e",
+                    },
+                    headerTintColor: "#fff",
+                  }}
+                  component={Login}
+                />
+              </>
+            )}
+          </Drawer.Navigator>
+        </PersistGate>
+      </Provider>
     </NavigationContainer>
   );
 }

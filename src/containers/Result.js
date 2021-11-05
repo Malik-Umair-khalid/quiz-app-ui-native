@@ -1,75 +1,69 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  Button,
-  TouchableOpacity,
-  TouchableHighlight,
-} from "react-native";
-import { auth, signOut } from "../config/Firebase";
+import React, { useState } from "react";
+import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
 
-function Result({ navigation }) {
-  const [press, setpress] = useState(true);
+const DATA = [
+  {
+    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+    title: "First Item",
+  },
+  {
+    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+    title: "Second Item",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    title: "Third Item",
+  },
+];
 
- const handlePress = (e) => {
- setpress(e.target.children[0].innerText)
+const Item = ({ item, onPress, backgroundColor, textColor }) => (
+  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+    <Text style={[styles.title, textColor]}>{item.title}</Text>
+  </TouchableOpacity>
+);
+
+const App = () => {
+  const [selectedId, setSelectedId] = useState(null);
+
+  const renderItem = ({ item }) => {
+    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
+    const color = item.id === selectedId ? 'white' : 'black';
+
+    return (
+      <Item
+        item={item}
+        onPress={() => setSelectedId(item.id)}
+        backgroundColor={{ backgroundColor }}
+        textColor={{ color }}
+      />
+    );
   };
-
-  const logOut = () => {
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-        navigation.navigate("signup");
-      })
-      .catch((error) => {});
-  };
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button color="#1ec77f" onPress={logOut} title="Logout" />
-      ),
-    });
-  });
 
   return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.container2}>
-            <img src="https://www.pngfind.com/pngs/m/57-578363_trophy-trophy-vector-png-transparent-png.png" height="100" width="100" alt="" />
-        </View>
-      </View>
-    </>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        extraData={selectedId}
+      />
+    </SafeAreaView>
   );
-}
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#22283e",
-    alignItems: "center",
-    justifyContent: "space-around",
-    fontFamily: "Arial, Helvetica, sans-serif",
+    marginTop: StatusBar.currentHeight || 0,
   },
-  heading: {
-    fontWeight: "normal",
-    fontSize: 25,
-    color: "#fff",
+  item: {
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
   },
-  para: {
-    fontWeight: "300",
-    fontSize: 14,
-    color: "gray",
+  title: {
+    fontSize: 32,
   },
-  container2:{
-    width: 80+"%",
-    height: 80+"%",
-    backgroundColor: "#ccdde7",
-    margin: "auto",
-    borderRadius: 30,
-  }
 });
 
-export default Result;
+export default App;

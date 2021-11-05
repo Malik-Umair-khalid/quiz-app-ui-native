@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, {useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -7,14 +7,55 @@ import {
   View,
   Button,
   TouchableOpacity,
+  FlatList,
+  SafeAreaView,
 } from "react-native";
+import { TouchableHighlight } from "react-native-gesture-handler";
+
+const DATA = [
+  {
+    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+    title: "First Item",
+    Option: "A",
+  },
+  {
+    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+    title: "Second Item",
+    Option: "B",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    title: "Third Item",
+    Option: "C",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d7",
+    title: "Third Item",
+    Option: "D",
+  },
+];
+
 import { auth, signOut } from "../config/Firebase";
 
+const Item = ({ item, onPress, backgroundColor, textColor, color}) => (
+  <TouchableOpacity
+    style={[styles.button, {backgroundColor: backgroundColor}]}
+    onPress={onPress}
+  >
+    <>
+    <View style={styles.option}>
+      <Text style={{ color: "#fff", fontSize: 25, fontWeight: "bold" }}>{item.Option}</Text>
+    </View>
+    <Text style={styles.optionText}>{item.title}</Text>
+    </>
+  </TouchableOpacity>
+);
+
 function Questions({ navigation }) {
+  const [selectedId, setSelectedId] = useState(null);
   const logOut = () => {
     signOut(auth)
       .then(() => {
-        // Sign-out successful.
         navigation.navigate("signup");
       })
       .catch((error) => {});
@@ -26,6 +67,20 @@ function Questions({ navigation }) {
       ),
     });
   });
+
+  const renderItem = ({ item }) => {
+    const backgroundColor = item.id === selectedId ? "#1ec77f" : "#ccdde7"
+    const color = item.id === selectedId ? "#ccdde7" : "#1ec77f";
+    return (
+      <Item
+        item={item}
+        onPress={() => setSelectedId(item.id)}
+        backgroundColor={backgroundColor }
+        textColor={color }
+      />
+    );
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -42,141 +97,63 @@ function Questions({ navigation }) {
           <Text style={styles.heading}>3:00 min</Text>
         </View>
         <View style={styles.line}></View>
-        <View style={{ padding: "10px" }}>
+        <View style={{ padding: 10 }}>
           <Text style={styles.heading}>
             <Text>1.</Text> It IS Question What Is Your Name XYZ?
           </Text>
         </View>
-        <TouchableOpacity style={styles.button}>
-          <View
-            style={{
-              height: 50,
-              width: 50,
-              borderRadius: 100,
-              backgroundColor: "#1ec77f",
-              position: "absolute",
-              left: 10,
-              top: 10,
-              justifyContent: "center",
-              alignItems: "center",
-              color: "#fff",
-              fontSize: 25,
-              fontWeight: "bold",
-            }}
-          >
-            A
+          <SafeAreaView style={[styles.container], {width:"100%"}}>
+          <FlatList
+          style={{width:"100%"}}
+          contentContainerStyle={{}}
+          data={DATA}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          extraData={selectedId}
+          />
+          </SafeAreaView>
+      
+        {/* <TouchableOpacity style={styles.button}>
+          <View style={styles.option}>
+            <Text style={{ color: "#fff", fontSize: 25, fontWeight: "bold" }}>
+              A
+            </Text>
           </View>
-          <Text
-            style={{
-              color: "#fff",
-              textAlign: "center",
-              color: "#000",
-              fontWeight: 500,
-            }}
-          >
-            Falananana
-          </Text>
+          <Text style={styles.optionText}>Falananana</Text>
+        </TouchableOpacity> */}
+        {/* <TouchableOpacity style={styles.button}>
+          <View style={styles.option}>
+            <Text style={{ color: "#fff", fontSize: 25, fontWeight: "bold" }}>
+              A
+            </Text>
+          </View>
+          <Text style={styles.optionText}>Falananana</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}>
-          <View
-            style={{
-              height: 50,
-              width: 50,
-              borderRadius: 100,
-              backgroundColor: "#1ec77f",
-              position: "absolute",
-              left: 10,
-              top: 10,
-              justifyContent: "center",
-              alignItems: "center",
-              color: "#fff",
-              fontSize: 25,
-              fontWeight: "bold",
-            }}
-          >
-            B
+          <View style={styles.option}>
+            <Text style={{ color: "#fff", fontSize: 25, fontWeight: "bold" }}>
+              A
+            </Text>
           </View>
-          <Text
-            style={{
-              color: "#fff",
-              textAlign: "center",
-              color: "#000",
-              fontWeight: 500,
-            }}
-          >
-            Falananana
-          </Text>
-        </TouchableOpacity>{" "}
-        <TouchableOpacity style={styles.button}>
-          <View
-            style={{
-              height: 50,
-              width: 50,
-              borderRadius: 100,
-              backgroundColor: "#1ec77f",
-              position: "absolute",
-              left: 10,
-              top: 10,
-              justifyContent: "center",
-              alignItems: "center",
-              color: "#fff",
-              fontSize: 25,
-              fontWeight: "bold",
-            }}
-          >
-            C
-          </View>
-          <Text
-            style={{
-              color: "#fff",
-              textAlign: "center",
-              color: "#000",
-              fontWeight: 500,
-            }}
-          >
-            Falananana
-          </Text>
-        </TouchableOpacity>{" "}
-        <TouchableOpacity style={styles.button}>
-          <View
-            style={{
-              height: 50,
-              width: 50,
-              borderRadius: 100,
-              backgroundColor: "#1ec77f",
-              position: "absolute",
-              left: 10,
-              top: 10,
-              justifyContent: "center",
-              alignItems: "center",
-              color: "#fff",
-              fontSize: 25,
-              fontWeight: "bold",
-            }}
-          >
-            D
-          </View>
-          <Text
-            style={{
-              color: "#fff",
-              textAlign: "center",
-              color: "#000",
-              fontWeight: 500,
-            }}
-          >
-            Falananana
-          </Text>
+          <Text style={styles.optionText}>Falananana</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.button}>
+          <View style={styles.option}>
+            <Text style={{ color: "#fff", fontSize: 25, fontWeight: "bold" }}>
+              A
+            </Text>
+          </View>
+          <Text style={styles.optionText}>Falananana</Text>
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.button2}>
           <Text
             style={{
               color: "#fff",
-              textAlign: "center",
-              color: "#000",
-              fontWeight: 500,
+              fontWeight: "500",
+              fontSize: 22,
             }}
           >
-          Next
+            Next
           </Text>
         </TouchableOpacity>
       </View>
@@ -191,7 +168,7 @@ const styles = StyleSheet.create({
     fontFamily: "Arial, Helvetica, sans-serif",
   },
   heading: {
-    fontWeight: 300,
+    fontWeight: "600",
     fontSize: 18,
     color: "#ccdae7",
   },
@@ -216,7 +193,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    backgroundColor: "#ccdde7",
+    // backgroundColor: "#ccdde7",
     padding: 10,
     width: "90%",
     paddingTop: 25,
@@ -230,7 +207,7 @@ const styles = StyleSheet.create({
     width: "90%",
     backgroundColor: "#fff",
   },
-  button2:{
+  button2: {
     alignItems: "center",
     backgroundColor: "#1ec77f",
     padding: 10,
@@ -240,8 +217,25 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 50,
     position: "absolute",
-    bottom: 20
-  }
+    bottom: 20,
+  },
+  option: {
+    height: 50,
+    width: 50,
+    borderRadius: 100,
+    backgroundColor: "#1ec77f",
+    position: "absolute",
+    left: 10,
+    top: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  optionText: {
+    color: "#fff",
+    textAlign: "center",
+    color: "#000",
+    fontWeight: "500",
+  },
 });
 
 export default Questions;
