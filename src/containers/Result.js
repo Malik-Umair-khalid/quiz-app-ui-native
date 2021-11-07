@@ -1,69 +1,93 @@
-import React, { useState } from "react";
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Button,
+  TouchableOpacity,
+  TouchableHighlight,
+  FlatList,
+} from "react-native";
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Item",
-  },
-];
-
-const Item = ({ item, onPress, backgroundColor, textColor }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-    <Text style={[styles.title, textColor]}>{item.title}</Text>
-  </TouchableOpacity>
-);
-
-const App = () => {
-  const [selectedId, setSelectedId] = useState(null);
-
-  const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
-    const color = item.id === selectedId ? 'white' : 'black';
-
-    return (
-      <Item
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        backgroundColor={{ backgroundColor }}
-        textColor={{ color }}
-      />
-    );
-  };
-
+function Result({ navigation, route }) {
+  let obtMarks = route.params.Marks;
+  let totalMarks = route.params
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        extraData={selectedId}
-      />
-    </SafeAreaView>
+    <>
+      <View style={styles.container}>
+        <View
+          style={{
+            width: "80%",
+            height: "80%",
+            backgroundColor: "#ccdde7",
+            margin: "auto",
+            borderRadius: 30,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={{}}>Congrates</Text>
+        </View>
+      </View>
+    </>
   );
-};
-
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    backgroundColor: "#22283e",
+    alignItems: "center",
+    justifyContent: "space-between",
+    fontFamily: "Arial, Helvetica, sans-serif",
   },
-  item: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+  heading: {
+    fontWeight: "normal",
+    fontSize: 25,
+    color: "#fff",
   },
-  title: {
-    fontSize: 32,
+  para: {
+    fontWeight: "300",
+    fontSize: 14,
+    color: "gray",
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    paddingLeft: 40,
+    width: 95 + "%",
+    borderRadius: 100,
+    backgroundColor: "#f2f2f2",
+    color: "gray",
+    marginTop: 20,
+    maxHeight: 100,
+    height: 70,
+    borderColor: "#f2f2f2",
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#32465e",
+    padding: 10,
+    width: "90%",
+    paddingTop: 25,
+    paddingBottom: 25,
+    borderRadius: 5,
+    marginTop: 15,
+    margin: "auto",
+  },
+  button2: {
+    alignItems: "center",
+    backgroundColor: "#1ec77f",
+    padding: 10,
+    width: "90%",
+    paddingTop: 25,
+    paddingBottom: 25,
+    borderRadius: 10,
+    marginTop: 50,
+    marginBottom: 20,
   },
 });
 
-export default App;
+export default Result;

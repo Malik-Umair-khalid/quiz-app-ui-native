@@ -48,7 +48,6 @@ function AppRouter() {
                     title: "Quiz App",
                     headerStyle: {
                       backgroundColor: "#22283e",
-                      justifyContent: "center",
                     },
                     headerTintColor: "#fff",
                   }}
@@ -57,10 +56,12 @@ function AppRouter() {
                 />
                 <Drawer.Screen
                   options={{
+                    drawerItemStyle:{
+                      display: "none"
+                    },
                     title: "Question",
                     headerStyle: {
                       backgroundColor: "#22283e",
-                      justifyContent: "center",
                     },
                     headerTintColor: "#fff",
                   }}
@@ -69,10 +70,12 @@ function AppRouter() {
                 />
                 <Drawer.Screen
                   options={{
+                    drawerItemStyle:{
+                      // display: "none"
+                    },
                     title: "Result",
                     headerStyle: {
                       backgroundColor: "#22283e",
-                      justifyContent: "center",
                     },
                     headerTintColor: "#fff",
                   }}
